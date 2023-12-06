@@ -1,38 +1,83 @@
+#include "shell.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
 
-/**
- * main - Entry point for the program.
- *
- * Return: Always 0 on success.
- */
 int main(void)
 {
-	char *line = NULL;
-	size_t len = 0;
-	ssize_t read;
-
+	char *input;
 	while (1)
-	{
-		printf("$ ");
-		read = getline(&line, &len, stdin);
+    {
+	    input = prompt_user();
+	    if (input == NULL)
+        {
+		fprintf(stderr, "Error reading input\n");
+		exit(EXIT_FAILURE);
+        }
 
-		if (read == -1) /* An error occurred */
-		{
-			perror("getline");
-			break;
-		}
+        if (execute_command(input) == -1)
+        {
+            /* Handle error in execute_command */
+        }
 
-		if (read == 1 && line[0] == '\n') /* Reached end-of-file (Ctrl+D) */
-		{
-			printf("\n");
-			break;
-		}
-
-		printf("%s", line);
-	}
-
-	free(line);
+        /* Free dynamically allocated memory for input */
+        free(input);
+    }
 	return (0);
+}
+
+#define BUFFER_SIZE 1024
+
+/**
+ * prompt_user - Display a prompt and wait for user input.
+ *
+ * Return: A dynamically allocated string containing the user input.
+ */
+char *prompt_user(void)
+{
+    char *buffer = NULL;
+    size_t bufsize = 0;
+
+    printf("#cisfun$ ");
+    getline(&buffer, &bufsize, stdin);
+
+    return buffer;
+}
+
+/**
+ * execute_command - Execute a command in the shell.
+ *
+ * @input: The input command.
+ * Return: 0 on success, -1 on failure.
+ */
+int execute_command(char *input)
+{
+    if (input == NULL)
+        return -1;
+
+    /* Remove the newline character at the end */
+    input[strlen(input) - 1] = '\0';
+
+    /* Use execvp to execute the command */
+    if (execvp(input, (char *const []){input, NULL}) == -1)
+    {
+        perror("Error");
+        return -1;
+    }
+
+    return 0;
+}
+
+/**
+ * parse_input - Parse the input and execute the command.
+ *
+ * @input: The input command.
+ * Return: 0 on success, -1 on failure.
+ */
+int parse_input(char *input __attribute__((unused)))
+{
+    /* Implementation of parsing and executing the input */
+    return 0;
 }
 
