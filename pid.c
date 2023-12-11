@@ -1,13 +1,13 @@
-#include "shell.h"
+#include <stdio.h>
+#include <unistd.h>
 
-/**
- * print_pid - Print the process ID of the shell.
- */
-void print_pid(void)
+int main(void)
 {
-	pid_t pid;
+    pid_t my_pid;
 
-	pid = getpid();
-	printf("%u\n", pid);
+    my_pid = getpid();
+    printf("My pid is %u\n", (unsigned int)my_pid);
+
+    return 0;
 }
 

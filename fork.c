@@ -1,38 +1,31 @@
-#include "shell.h"
+#include <stdio.h>
+#include <unistd.h>
 
 /**
- * fork_and_execute - Fork a child process and execute a command.
+ * main - fork example
  *
- * @command: The command to be executed.
- * Return: On success, the process ID of the child process.
- *         On failure, -1 is returned.
+ * Return: Always 0.
  */
-pid_t fork_and_execute(char *command)
+int main(void)
 {
-	pid_t pid;
-	int status;
+    pid_t my_pid;
+    pid_t child_pid;
 
-	pid = fork();
-
-	if (pid == -1)
-	{
-		perror("Error");
-		return (-1);
-	}
-
-	if (pid == 0)
-	{
-		/* Child process */
-		if (execute_command(command) == -1)
-			exit(EXIT_FAILURE);
-		exit(EXIT_SUCCESS);
-	}
-	else
-	{
-		/* Parent process */
-		waitpid(pid, &status, 0);
-	}
-
-	return (pid);
+    child_pid = fork();
+    if (child_pid == -1)
+    {
+        perror("Error:");
+        return (1);
+    }
+    my_pid = getpid();
+    printf("My pid is %u\n", my_pid);
+    if (child_pid == 0)
+    {
+        printf("(%u) Nooooooooo!\n", my_pid);
+    }
+    else
+    {
+        printf("(%u) %u, I am your father\n", my_pid, child_pid);
+    }
+    return (0);
 }
-

@@ -1,13 +1,13 @@
-#include "shell.h"
+#include <stdio.h>
+#include <unistd.h>
 
-/**
- * print_ppid - Print the parent process ID of the shell.
- */
-void print_ppid(void)
+int main(void)
 {
-	pid_t ppid;
+    pid_t my_ppid;
 
-	ppid = getppid();
-	printf("%u\n", ppid);
+    my_ppid = getppid();
+    printf("My parent pid is %u\n", (unsigned int)my_ppid);
+
+    return 0;
 }
 

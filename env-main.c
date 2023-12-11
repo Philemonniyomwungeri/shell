@@ -1,29 +1,20 @@
-#include "shell.h"
 #include <stdio.h>
-#include <stdlib.h>
 
-int main(void)
+/**
+ * main - prints the environment
+ *
+ * Return: Always 0.
+ */
+int main(int ac, char **av, char **env)
 {
-	char *input;
+    unsigned int i;
 
-	while (1)
-	{
-		input = prompt_user();
-
-		if (input == NULL)
-		{
-			fprintf(stderr, "Error reading input\n");
-			exit(EXIT_FAILURE);
-		}
-
-		if (execute_command(input) == -1)
-		{
-			/* Handle error in execute_command */
-		}
-
-		free(input);
-	}
-
-	return (0);
+    i = 0;
+    while (env[i] != NULL)
+    {
+        printf("%s\n", env[i]);
+        i++;
+    }
+    return (0);
 }
 
